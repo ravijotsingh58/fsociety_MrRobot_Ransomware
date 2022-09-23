@@ -23,6 +23,7 @@ This is Fsociety Ransomware coded by Darlene in MrRobot (S1E2,3)
 ## Notes:
 - For security reason the ransomware crypt only .txt but you can change on c++ file
 - windows not contains dirent.h, so i have to get it separately from some website. I have provided that file also for windows.
+- U have to create database named 'fsociety' before importing sql file.
 
 ## please remember this is just a PoC the ransomware is not stable is just for fun!
 
