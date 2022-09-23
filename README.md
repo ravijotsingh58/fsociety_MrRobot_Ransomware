@@ -22,7 +22,7 @@ This is Fsociety Ransomware coded by Darlene in MrRobot (S1E2,3)
 
 (For security reason the ransomware crypt only .txt but you can change on c++ file)
 
-###### please remember this is just a PoC the ransomware is not stable is just for fun!
+## please remember this is just a PoC the ransomware is not stable is just for fun!
 
 ## Advanced
 In future i'll add multiple step (Decrypt one file for free, FAQ ...).
