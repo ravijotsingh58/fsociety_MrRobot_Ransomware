@@ -65,86 +65,36 @@ string fsociety::number_to_string(int x){
 
 int fsociety::listfiledirectory(char *directory){
 
-#if !(defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(_CYGWIN_))
-    WIN32_FIND_DATAA ffd;
-    LARGE_INTEGER filesize;
-    char szDir[MAX_PATH];
-    size_t length_of_arg;
-    HANDLE hFind = INVALID_HANDLE_VALUE;
-    DWORD dwError = 0;
-
-    if (strlen(directory) == 0)
-    {
-        printf(" -- \n Directory name not specified --\n");
-        return (-1);
-    }
-
-    StringCchCopyA(szDir, MAX_PATH, directory);
-    StringCchCatA(szDir, MAX_PATH, "\\*");
-
-    hFind = FindFirstFileA(szDir, &ffd);
-
-    if (INVALID_HANDLE_VALUE == hFind)
-    {
-        printf("FindFirstFile --\n");
-        return dwError;
-    }
-
-    do
-    {
-        if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-        {
-           printf("  %s   <DIR>\n", ffd.cFileName);
-        }
-        else
-        {
-            filesize.LowPart = ffd.nFileSizeLow;
-            filesize.HighPart = ffd.nFileSizeHigh;
-            printf("  %s   %ld bytes\n", ffd.cFileName, filesize.QuadPart);
-        }
-    } while (FindNextFileA(hFind, &ffd) != 0);
-
-    dwError = GetLastError();
-    if (dwError != ERROR_NO_MORE_FILES)
-    {
-        printf("FindFirstFile");
-    }
-
-    FindClose(hFind);
-    return dwError;
-
-#else
     DIR *dir;
     struct dirent *entry;
     if((dir = opendir(directory)) != NULL){
-	while((entry = readdir(dir)) != NULL){
-	    if(strcmp(entry->d_name, "..") != 0 && strcmp(entry->d_name,".") != 0)
-	    {
-		// concat three char*
-		size_t len_folder = strlen(directory);
-		size_t len_name = strlen(entry->d_name);
-		size_t len_slash = strlen(this->slash);
-		char *concat = (char *) malloc(len_folder + len_slash + len_name + 1);
-		memcpy(concat, directory, len_folder);
-		memcpy(concat + len_folder, this->slash, len_slash);
-		memcpy(concat + len_folder + len_slash,entry->d_name, len_name);
-		concat[len_folder + len_slash + len_name] = '\0';
-		//
-		if(is_directory(concat) == 1)
-		{
-		    this->listfiledirectory(concat);	    
-		}
-		else
-		{
-		    //cout << entry->d_name << endl;
-		    this->open_file(concat);
-		}
+	    while((entry = readdir(dir)) != NULL){
+	        if(strcmp(entry->d_name, "..") != 0 && strcmp(entry->d_name,".") != 0)
+	        {
+		        // concat three char*
+		        size_t len_folder = strlen(directory);
+		        size_t len_name = strlen(entry->d_name);
+		        size_t len_slash = strlen(this->slash);
+		        char *concat = (char *) malloc(len_folder + len_slash + len_name + 1);
+		        memcpy(concat, directory, len_folder);
+		        memcpy(concat + len_folder, this->slash, len_slash);
+		        memcpy(concat + len_folder + len_slash,entry->d_name, len_name);
+		        concat[len_folder + len_slash + len_name] = '\0';
+		        //
+		        if(is_directory(concat) == 1)
+		        {
+		            this->listfiledirectory(concat);	    
+		        }
+		        else
+		        {
+		            //cout << entry->d_name << endl;
+		            this->open_file(concat);
+		        }
+	        }
 	    }
-	}
-	closedir(dir);
+	    closedir(dir);
     }
     //std::cout << "start : " << this->nb_file << std::endl;
-#endif
     return 0;
 }
 
